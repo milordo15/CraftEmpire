@@ -19,8 +19,8 @@
 <body>
   <header class="wrap nav">
     <a class="brand" href="#top"><span class="mark">CE</span><span>CraftEmpire</span></a>
-    <nav class="navlinks" aria-label="Nawigacja"><a href="#funkcje">Funkcje</a><a href="#instalacja">Instalacja</a><a href="#wersje">Wersje</a><a href="#faq">FAQ</a></nav>
-    <a class="navbtn" href="#wersje">Pobierz <span aria-hidden="true">↓</span></a>
+    <nav class="navlinks" aria-label="Nawigacja"><a href="#funkcje">Funkcje</a><a href="#instalacja">Instalacja</a><a href="wersje.html">Wersje</a><a href="#faq">FAQ</a></nav>
+    <a class="navbtn" href="wersje.html">Pobierz <span aria-hidden="true">↓</span></a>
   </header>
   <main id="top">
     <section class="wrap hero">
@@ -28,7 +28,7 @@
         <div class="eyebrow"><span class="dot"></span> Asystent Minecraft · Windows</div>
         <h1>Pomysły na serwer.<br><span class="glow">Gotowe skrypty.</span></h1>
         <p class="lead">Rozmawiaj o Minecraft i twórz skrypty Skript z opisów. Pisz zwyczajnie albo zacznij od /skrypt. CraftEmpire używa lokalnego AI — bez klucza API.</p>
-        <div class="actions"><a class="download" href="#wersje">Pobierz instalator <span aria-hidden="true">↓</span></a><a class="secondary" href="#funkcje">Poznaj aplikację</a></div>
+        <div class="actions"><a class="download" href="wersje.html">Pobierz instalator <span aria-hidden="true">↓</span></a><a class="secondary" href="#funkcje">Poznaj aplikację</a></div>
         <p class="smallnote">Windows 10/11 · 64-bit · Do AI potrzebne są osobne lokalne modele</p>
       </div>
       <div class="mock" aria-label="Podgląd aplikacji CraftEmpire">
@@ -50,8 +50,7 @@
       </div>
       <p class="smallnote" style="text-align:center;margin-top:18px">Ollama i model językowy pobiera się osobno. Mogą wymagać sporo miejsca i mocy komputera.</p>
     </div></section>
-    <section class="section" id="pobierz"><div class="wrap"><div class="downloadbox"><div><div class="kicker">CraftEmpire dla Windows</div><h2>Gotowy na nowy pomysł?</h2><p>Wybierz wersję CraftEmpire i pobierz jej plik ZIP.</p></div><a class="download" href="#wersje">Zobacz wersje <span aria-hidden="true">↓</span></a></div></div></section>
-    <section class="section" id="wersje"><div class="wrap"><div class="sectionhead"><div class="kicker">Wybierz dla siebie</div><h2>Dostępne wersje</h2><p>Starsze wersje zostają dostępne. Wybierz wersję i kliknij przycisk pobierania.</p></div><div class="release-list" id="releaseList" aria-live="polite"><div class="release-error">Ładuję dostępne wersje…</div></div></div></section>
+    <section class="section" id="pobierz"><div class="wrap"><div class="downloadbox"><div><div class="kicker">CraftEmpire dla Windows</div><h2>Gotowy na nowy pomysł?</h2><p>Wybierz wersję CraftEmpire i pobierz jej plik ZIP.</p></div><a class="download" href="wersje.html">Zobacz wersje <span aria-hidden="true">→</span></a></div></div></section>
     <section class="section" id="instalacja"><div class="wrap">
       <div class="sectionhead"><div class="kicker">Pierwsze uruchomienie</div><h2>Instalacja w trzech krokach</h2><p>Instalator jest przeznaczony dla bieżącego użytkownika komputera.</p></div>
       <div class="steps"><article class="step"><h3>Pobierz</h3><p>Zapisz plik CraftEmpire-Setup.zip na komputerze.</p></article><article class="step"><h3>Rozpakuj</h3><p>Kliknij ZIP prawym przyciskiem i wybierz „Wyodrębnij wszystko”.</p></article><article class="step"><h3>Uruchom</h3><p>Otwórz rozpakowany folder i uruchom CraftEmpire-Setup.exe.</p></article></div>
@@ -63,33 +62,6 @@
     </div></div></section>
   </main>
   <footer class="footer"><div class="wrap footerinner"><span><strong>CraftEmpire</strong> · Asystent Minecraft</span><span>Nieoficjalny projekt fanowski. Minecraft jest znakiem towarowym Mojang.</span></div></footer>
-  <script>
-    const account = location.hostname.split('.')[0];
-    const list = document.getElementById('releaseList');
-    fetch(`https://api.github.com/repos/${account}/CraftEmpire/releases?per_page=30`)
-      .then(response => response.ok ? response.json() : Promise.reject())
-      .then(releases => {
-        const available = releases.map(release => ({
-          release,
-          installer: (release.assets || []).find(asset => /^CraftEmpire-Setup\.(zip|exe)$/i.test(asset.name))
-        })).filter(item => item.installer);
-        list.replaceChildren();
-        if (!available.length) throw new Error('no installers');
-        available.forEach(({release, installer}, index) => {
-          const card = document.createElement('article'); card.className = 'release-card';
-          const details = document.createElement('div');
-          const title = document.createElement('h3'); title.textContent = release.name || release.tag_name;
-          if (index === 0) { const badge = document.createElement('span'); badge.className = 'release-latest'; badge.textContent = 'Najnowsza'; title.append(' ', badge); }
-          const meta = document.createElement('div'); meta.className = 'release-meta';
-          meta.textContent = `${release.tag_name} · ${new Date(release.published_at || release.created_at).toLocaleDateString('pl-PL')} · ${installer.name}`;
-          details.append(title, meta);
-          if (release.body) { const notes = document.createElement('p'); notes.className = 'release-notes'; notes.textContent = release.body; details.append(notes); }
-          const button = document.createElement('a'); button.className = 'download release-download'; button.href = installer.browser_download_url; button.textContent = 'Pobierz tę wersję ↓';
-          card.append(details, button); list.append(card);
-        });
-      })
-      .catch(() => { list.innerHTML = '<div class="release-error">Nie udało się załadować wersji. Spróbuj odświeżyć stronę.</div>'; });
-  </script>
 </body>
 </html>
 
